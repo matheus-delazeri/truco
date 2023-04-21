@@ -1,5 +1,7 @@
 import random
+from pprint import pprint
 
+from truco.log import log
 
 class Player:
     NAME_PREFIX = "Player"
@@ -9,21 +11,18 @@ class Player:
         self.name = f"{self.NAME_PREFIX} {number}"
 
     def set_cards(self, cards: list):
-        self.cards = cards
+        # Sort cards by value, from lowest to higher. 
+        # E.g. self.cards[0] = lowest card
+        self.cards = sorted(cards, key=lambda obj: obj.get_value())
         return self
 
     def choose_play(self, _round):
         plays_available = _round.get_plays_available(self)
-        for i in range(len(plays_available)):
-            print(f"[{i}] - {plays_available[i]}")
-        play_index = int(input("\n-> What you want to do: "))
-
-        if play_index not in plays_available:
-            print("-> Invalid play index, try again...")
-            return self.choose_play(_round)
-
-        return plays_available[play_index]
-
+        print("[GAME] Plays available: \n")
+        for _, option in plays_available.items():
+            id, msg = option
+            print(f" [{id}] - {msg.title()}")
+        return int(input("\n[GAME] What you want to do: "))
 
 class Bot(Player):
     NAME_PREFIX = "Bot"
