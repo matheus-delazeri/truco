@@ -123,9 +123,13 @@ class Game:
                         self.play_label = self.CALLS[play_id]["key"]
                         self.type = "call"
                         self.value = self.CALLS[play_id]["value"]
-                    else:
+                    elif play_id in self.CARDS:
                         self.play_label = self.CARDS[play_id]["key"]
                         self.type = "card"
+                    else:
+                        self.play_label = self.ACTIONS[play_id]["key"]
+                        self.type = "action"
+
 
                 def print(self):
                     if self.type == "call":

@@ -32,4 +32,5 @@ class Bot(Player):
         self.name = f"{self.NAME_PREFIX} {number}"
 
     def choose_play(self, _round):
-        return random.choice(_round.get_plays_available(self))
+        id, msg = random.choice(_round.get_plays_available(self))
+        return id

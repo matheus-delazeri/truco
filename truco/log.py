@@ -1,25 +1,25 @@
-from pprint import pprint
+import inspect
+import logging
 import time
 
 def log(fn):
-    from main import exec_args
+    from truco.arguments import exec_args
 
     if not exec_args.debbuger:
         return fn
     
+    logger = logging.getLogger()
+    logging.basicConfig(format="[%(levelname)s]: %(message)s \n[%(levelname)s] End\n", level=logging.DEBUG)
     def wrapper(*args, **kwargs):
-        print("\n--- DEBBUGER ---\n")
-        print(f"> Function: {fn.__name__}")
-        print(f"> Arguments:")
         arguments = get_args_dict(fn, *args, **kwargs)
+        log_msg = "{}()\n\n> Arguments: ".format(fn.__name__)
         for name, value in arguments.items():
-            print(f">> {name} = [{value}]")
+            log_msg += "\n>> {} : {}".format(name, value)
 
-        start_time = time.time()
+        start_time = time.perf_counter()
         result = fn(*args, **kwargs)
-        print(f"\n[DEBUG] Result: {result}")
-        print(f"[DEBUG] Time spent: {round(time.time() - start_time, 3)}s\n")
-        print("----------------\n")
+        log_msg += "\n\n> Return: {}\n\n> Time elapsed: {}\n".format(result, round(time.perf_counter() - start_time, 3))
+        logger.debug(log_msg)
         return result
 
     return wrapper
