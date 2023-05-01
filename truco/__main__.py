@@ -5,7 +5,9 @@ if __name__ == '__main__':
     from truco.data.analyser import Analyser
 
     if exec_args.analyser:
-        print(Analyser())
+        analyser = Analyser()
+        print(analyser)
+        analyser.menu()
     else:
         Game(num_players=exec_args.num_players, num_bots=exec_args.num_bots)
 
