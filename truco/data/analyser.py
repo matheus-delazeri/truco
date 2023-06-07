@@ -39,12 +39,12 @@ class Analyser:
 
         values = self.df[
             [
-                'bot_card_high', 'bot_card_suit_high',
-                'bot_card_medium', 'bot_card_suit_medium',
-                'bot_card_low', 'bot_card_suit_low',
+                'self_high_card',
+                'self_medium_card',
+                'self_low_card',
             ]
         ]
-        labels = self.df['bot_hand_balance']
+        labels = self.df['self_hand_balance']
 
         kNeighborsClassifier = KNeighborsClassifier(
             n_neighbors=5).fit(values, labels)
@@ -62,12 +62,9 @@ class Analyser:
 
         hand_cards = sorted(hand_cards, key=lambda obj: obj.get_value())
         hand_cards_data = {
-            'bot_card_high': [hand_cards[2].get_value()],
-            'bot_card_suit_high': [hand_cards[2].suit_id],
-            'bot_card_medium': [hand_cards[1].get_value()], 
-            'bot_card_suit_medium': [hand_cards[1].suit_id],
-            'bot_card_low': [hand_cards[0].get_value()],
-            'bot_card_suit_low': [hand_cards[0].suit_id]
+            'self_high_card': [hand_cards[2].get_value()],
+            'self_medium_card': [hand_cards[1].get_value()], 
+            'self_low_card': [hand_cards[0].get_value()],
         }
         hand_cards_df = pd.DataFrame(data=hand_cards_data)
 
@@ -77,13 +74,10 @@ class Analyser:
         print("\nNEAREST NEIGHBOR FOUND\n------------\n")
         print(self.df[[
             'id',
-            'bot_card_high',
-            'bot_card_suit_high',
-            'bot_card_medium', 
-            'bot_card_suit_medium',
-            'bot_card_low',
-            'bot_card_suit_low',
-            'bot_hand_balance']].loc[neighbor_row])
+            'self_high_card',
+            'self_medium_card', 
+            'self_low_card',
+            'self_hand_balance']].loc[neighbor_row])
 
         predicted_hand_balance = kNeighborsClassifier.predict(X=hand_cards_df).item()
         print("\n------------\nPREDICTED HAND BALANCE: [{}]".format(predicted_hand_balance))
