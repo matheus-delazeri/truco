@@ -5,7 +5,7 @@ import time
 def log(fn):
     from truco.arguments import exec_args
 
-    if not exec_args.debbuger:
+    if not exec_args.debugger:
         return fn
     
     logger = logging.getLogger()

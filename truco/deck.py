@@ -10,6 +10,10 @@ class Deck:
         cards, self.deck = self.deck[:amount], self.deck[amount:]
         return cards
 
+    @staticmethod
+    def sort_cards_by_value(cards:list):
+        return sorted(cards, key=lambda obj: obj.get_value())
+
 
     class Card:
         played = False
@@ -43,6 +47,9 @@ class Deck:
         def __init__(self, number: int, suit_id: int):
             self.number = number
             self.suit_id = suit_id
+
+        def __str__(self):
+            return "{} of {}".format(self.number, self.get_suit_label())
 
         def get_suit_label(self):
             return self.SUIT_LABEL[self.suit_id]
